@@ -29,5 +29,12 @@ public class TestbancoJdbc {
 		List<UserPosJava> usuarios = userPosJavaDAO.listarUsuarios();
 		usuarios.stream().forEach(System.out::println);
 	}
+	
+	@Test
+	public void initListaPorId() {
+		UserPosJavaDAO userPosJavaDAO = new UserPosJavaDAO();
+		UserPosJava usuario = userPosJavaDAO.listarPorId(3L);
+		System.out.println(usuario);
+	}
 
 }
