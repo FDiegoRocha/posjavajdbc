@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import conexaojdbc.SingleConnection;
+import model.Telefone;
 import model.UserPosJava;
 
 public class UserPosJavaDAO {
@@ -19,12 +20,11 @@ public class UserPosJavaDAO {
 	}
 	
 	public void salvar(UserPosJava userPosJava) {
-		String sql = "INSERT INTO userposjava (id, nome, email) VALUES (?, ?, ?);";
+		String sql = "INSERT INTO userposjava (nome, email) VALUES (?, ?);";
 		try {
 			PreparedStatement st = connection.prepareStatement(sql);
-			st.setLong(1, userPosJava.getId());
-			st.setString(2, userPosJava.getNome());
-			st.setString(3, userPosJava.getEmail());
+			st.setString(1, userPosJava.getNome());
+			st.setString(2, userPosJava.getEmail());
 			st.execute();
 			connection.commit();
 			System.out.println("Usuario salvo!");
@@ -38,6 +38,27 @@ public class UserPosJavaDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	public void salvarTelefone(Telefone telefone) {
+		String sql = "INSERT INTO telefoneuser (numero, tipo, usuariopessoa) VALUES (?,?,?)";
+		try {
+			PreparedStatement st = connection.prepareStatement(sql);
+			st.setString(1, telefone.getNumero());
+			st.setString(2, telefone.getTipo());
+			st.setLong(3, telefone.getUsuario());
+			st.execute();
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+	}
+	
 	
 	public List<UserPosJava> listarUsuarios(){
 		String sql = "SELECT * FROM userposjava;";
@@ -75,6 +96,42 @@ public class UserPosJavaDAO {
 			e.printStackTrace();
 		}
 		return user;
+	}
+	
+	public void atualizar(UserPosJava userPosJava) {
+		String sql = "UPDATE userposjava SET nome = ? WHERE id = ?";
+		try {
+			PreparedStatement st = connection.prepareStatement(sql);
+			st.setString(1, userPosJava.getNome());
+			st.setLong(2, userPosJava.getId());
+			st.execute();
+			connection.commit();
+		}catch(SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+	}
+	
+	public void deletar(Long id) {
+		String sql = "DELETE FROM userposjava WHERE id = ?";
+		try {
+			PreparedStatement st = connection.prepareStatement(sql);
+			st.setLong(1, id);
+			st.execute();
+			connection.commit();
+		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		
 	}
 	
 

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import conexaojdbc.SingleConnection;
 import dao.UserPosJavaDAO;
+import model.Telefone;
 import model.UserPosJava;
 
 public class TestbancoJdbc {
@@ -15,9 +16,8 @@ public class TestbancoJdbc {
 		SingleConnection.getConnection();
 		
 		UserPosJava user = new UserPosJava();
-		user.setId(4L);
-		user.setNome("Janmille Rocha");
-		user.setEmail("Janmille@gmail.com");
+		user.setNome("Albert Silva");
+		user.setEmail("Albert@gmail.com");
 		UserPosJavaDAO userPosJavaDAO = new UserPosJavaDAO();
 		
 		userPosJavaDAO.salvar(user);
@@ -35,6 +35,30 @@ public class TestbancoJdbc {
 		UserPosJavaDAO userPosJavaDAO = new UserPosJavaDAO();
 		UserPosJava usuario = userPosJavaDAO.listarPorId(3L);
 		System.out.println(usuario);
+	}
+	
+	@Test
+	public void initAtualizar() {
+		UserPosJavaDAO dao = new UserPosJavaDAO();
+		UserPosJava userBanco = dao.listarPorId(1L);
+		userBanco.setNome("Alex Joaquim da Silva Xavier");
+		dao.atualizar(userBanco);
+	}
+	
+	@Test
+	public void initDeletar() {
+		UserPosJavaDAO dao = new UserPosJavaDAO();
+		dao.deletar(7L);
+	}
+	
+	@Test
+	public void testSalvarTelefone() {
+		UserPosJavaDAO dao = new UserPosJavaDAO();
+		Telefone tel = new Telefone();
+		tel.setNumero("85 32659856");
+		tel.setTipo("Casa");
+		tel.setUsuario(9L);
+		dao.salvarTelefone(tel);
 	}
 
 }
